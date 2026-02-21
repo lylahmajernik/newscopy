@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
@@ -10,6 +10,8 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from || '/';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ function Login() {
     try {
       login(username, password, selectedRole);
       // Redirect to saved articles after successful login
-      navigate('/saved');
+      navigate(from, { replace: true});
     } catch (err) {
       setError('Login failed. Please try again.');
     }
